@@ -1,0 +1,515 @@
+/* Cost of Fear Replication Guide
+   Colors and type live here. Page text lives in src/pages/index.md. */
+
+:root {
+  --paper: #f2f4f6;
+  --sheet: #fcfdfd;
+  --ink: #16202b;
+  --ink-soft: #3c4a57;
+  --muted: #5c6b7a;
+  --rule: #cbd4dc;
+  --rule-soft: #e1e7ec;
+  --accent: #1f5c73;
+  --accent-bg: #e4edf1;
+  --signal: #a8380f;
+  --signal-bg: #f7e9e2;
+  --shadow: 0 1px 2px rgba(22, 32, 43, 0.06), 0 8px 24px rgba(22, 32, 43, 0.05);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #10151a;
+    --sheet: #171e25;
+    --ink: #dfe6eb;
+    --ink-soft: #b6c2cc;
+    --muted: #8798a6;
+    --rule: #2c3843;
+    --rule-soft: #232c35;
+    --accent: #7cb8ce;
+    --accent-bg: #1a2c35;
+    --signal: #e88257;
+    --signal-bg: #2e1d15;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #10151a;
+  --sheet: #171e25;
+  --ink: #dfe6eb;
+  --ink-soft: #b6c2cc;
+  --muted: #8798a6;
+  --rule: #2c3843;
+  --rule-soft: #232c35;
+  --accent: #7cb8ce;
+  --accent-bg: #1a2c35;
+  --signal: #e88257;
+  --signal-bg: #2e1d15;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+.sheet {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 34px 28px 56px;
+  background: var(--sheet);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- masthead ---------- */
+
+.mast {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+}
+
+.mast h1 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -0.024em;
+  line-height: 1.03;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ---------- toolbar ---------- */
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  margin-bottom: 4px;
+  background: var(--sheet);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.toolbar .count {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.toolbar .bar {
+  flex: 1;
+  min-width: 90px;
+  height: 5px;
+  background: var(--rule-soft);
+  position: relative;
+}
+
+.toolbar .bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.18s ease;
+}
+
+.toolbar button {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--muted);
+  padding: 5px 11px;
+}
+
+.toolbar button:hover {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+.toolbar button:focus-visible,
+.guide input[type='checkbox']:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- markdown body ---------- */
+
+.guide {
+  padding-top: 10px;
+}
+
+.guide > p {
+  max-width: 72ch;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+}
+
+.guide h2 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  margin: 40px 0 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  text-wrap: balance;
+}
+
+.guide h2:first-child {
+  margin-top: 20px;
+}
+
+.guide h3 {
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  margin: 26px 0 8px;
+}
+
+.guide a {
+  color: var(--accent);
+}
+
+.guide strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.guide code {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.87em;
+  color: var(--accent);
+  word-break: break-word;
+}
+
+/* A paragraph that opens in bold is a callout: "Decide:", "You are done when:" */
+.guide > p:has(> strong:first-child) {
+  border-left: 3px solid var(--accent);
+  padding: 2px 0 2px 13px;
+  color: var(--ink-soft);
+}
+
+/* "> **Note:** ..." */
+.guide blockquote {
+  margin: 16px 0;
+  padding: 11px 15px;
+  background: var(--signal-bg);
+  border-left: 3px solid var(--signal);
+  max-width: 74ch;
+  color: var(--ink-soft);
+}
+
+.guide blockquote p {
+  margin: 0;
+}
+
+.guide blockquote strong {
+  color: var(--signal);
+}
+
+/* ---------- tables ---------- */
+
+.guide table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin: 4px 0 18px;
+  /* Wide tables scroll on their own instead of stretching the page */
+  display: block;
+  overflow-x: auto;
+}
+
+@media (min-width: 700px) {
+  .guide table {
+    display: table;
+  }
+}
+
+.guide th {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 0 14px 6px 0;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.guide td {
+  padding: 9px 14px 9px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+  color: var(--ink-soft);
+}
+
+.guide td:first-child {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- checklists ---------- */
+
+.guide ul {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.guide li {
+  margin: 0 0 9px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  max-width: 74ch;
+}
+
+/* plain (non-checkbox) bullets keep a marker */
+.guide li:not(.task-list-item) {
+  padding-left: 17px;
+  position: relative;
+}
+
+.guide li:not(.task-list-item)::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--rule);
+}
+
+/* Checkbox hangs in the gutter so the text stays one normal wrapping block */
+.guide li.task-list-item {
+  padding-left: 26px;
+  position: relative;
+}
+
+.guide input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  border: 1.5px solid var(--muted);
+  background: transparent;
+  cursor: pointer;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.guide input[type='checkbox']:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.guide input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 1.5px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--sheet);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.guide li.is-done {
+  color: var(--muted);
+}
+
+/* ---------- footer ---------- */
+
+.foot {
+  margin-top: 40px;
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
+  color: var(--muted);
+  font-size: 14.5px;
+  max-width: 74ch;
+}
+
+.foot p {
+  margin: 0 0 8px;
+}
+
+.foot a {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* ---------- print / save as PDF ---------- */
+
+@page {
+  size: letter;
+  margin: 0.55in;
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 9.5pt;
+    line-height: 1.35;
+  }
+
+  .sheet {
+    max-width: none;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .toolbar {
+    display: none;
+  }
+
+  .mast {
+    border-bottom: 1.5pt solid #000;
+    padding-bottom: 8pt;
+  }
+
+  .mast h1 {
+    font-size: 20pt;
+  }
+
+  .guide h2 {
+    font-size: 12pt;
+    margin: 14pt 0 5pt;
+    padding-top: 6pt;
+    border-top: 0.5pt solid #999;
+    break-after: avoid;
+  }
+
+  .guide h3 {
+    font-size: 10.5pt;
+    margin: 10pt 0 4pt;
+    break-after: avoid;
+  }
+
+  .guide > p,
+  .guide li,
+  .guide td {
+    color: #000;
+  }
+
+  .guide > p {
+    margin-bottom: 6pt;
+  }
+
+  .guide li {
+    margin-bottom: 3pt;
+    break-inside: avoid;
+  }
+
+  .guide ul,
+  .guide table,
+  .guide blockquote {
+    break-inside: avoid;
+  }
+
+  .guide blockquote {
+    background: none;
+    border-left: 2pt solid #000;
+    padding: 3pt 0 3pt 8pt;
+    margin: 6pt 0;
+  }
+
+  .guide > p:has(> strong:first-child) {
+    border-left: 2pt solid #000;
+    padding-left: 8pt;
+  }
+
+  .guide table {
+    display: table;
+    font-size: 8.5pt;
+  }
+
+  .guide th {
+    font-size: 7pt;
+    border-bottom: 0.5pt solid #000;
+  }
+
+  .guide td {
+    padding: 2pt 8pt 2pt 0;
+    border-bottom: 0.5pt solid #ccc;
+  }
+
+  .guide li.task-list-item {
+    padding-left: 15pt;
+  }
+
+  .guide input[type='checkbox'] {
+    width: 8pt;
+    height: 8pt;
+    top: 2.5pt;
+    border: 0.75pt solid #000;
+  }
+
+  .guide input[type='checkbox']:checked {
+    background: #000;
+    border-color: #000;
+  }
+
+  .guide input[type='checkbox']:checked::after {
+    left: 2.4pt;
+    top: 0.6pt;
+    width: 2.2pt;
+    height: 4.6pt;
+    border-color: #fff;
+    border-width: 0 1.5pt 1.5pt 0;
+  }
+
+  .guide li.is-done {
+    color: #000;
+  }
+
+  .foot {
+    margin-top: 14pt;
+    padding-top: 6pt;
+    border-top: 1pt solid #000;
+    font-size: 8pt;
+    color: #000;
+  }
+
+  .guide a {
+    color: #000;
+    text-decoration: none;
+  }
+}

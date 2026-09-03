@@ -1,0 +1,153 @@
+---
+import '../styles/guide.css';
+
+const { frontmatter } = Astro.props;
+const title = frontmatter?.title ?? 'Cost of Fear Replication Guide';
+const description = frontmatter?.description ?? '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="article" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap"
+    />
+  </head>
+
+  <body>
+    <div class="sheet">
+      <header class="mast">
+        <h1>{title}</h1>
+      </header>
+
+      <div class="toolbar" id="toolbar">
+        <span class="count" id="count">0 of 0 done</span>
+        <div class="bar"><span id="bar"></span></div>
+        <button type="button" id="print">Save as PDF</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+
+      <main class="guide">
+        <slot />
+      </main>
+
+      <footer class="foot">
+        <p>
+          Your checkmarks are saved in this browser only. They stay if you close the tab, and they are
+          not sent anywhere. Use <strong>Clear</strong> to start over.
+        </p>
+        <p>
+          Questions, or want the code? Open an issue at
+          <a href="https://github.com/ucla-lppi/ice-impact-replication">github.com/ucla-lppi/ice-impact-replication</a>.
+        </p>
+      </footer>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var KEY = 'cof-replication-progress';
+
+        // GitHub-flavored markdown renders "- [ ]" as a disabled checkbox. Turn them back on.
+        var boxes = Array.prototype.slice.call(
+          document.querySelectorAll('.guide input[type="checkbox"]')
+        );
+
+        // Key each box by its own text, so editing one item does not wipe the others.
+        function keyFor(box) {
+          var li = box.closest('li');
+          var text = (li ? li.textContent : '').replace(/\s+/g, ' ').trim().slice(0, 120);
+          var h = 5381;
+          for (var i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+          return 'k' + h;
+        }
+
+        var saved = {};
+        try {
+          saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+        } catch (e) {
+          saved = {};
+        }
+
+        var used = {};
+        boxes.forEach(function (box) {
+          box.disabled = false;
+          var li = box.closest('li');
+          if (li) li.classList.add('task');
+
+          // If two items are worded identically, keep their keys apart.
+          var base = keyFor(box);
+          var k = base;
+          var n = 1;
+          while (used[k]) k = base + '-' + ++n;
+          used[k] = 1;
+
+          box.dataset.key = k;
+          if (saved[k]) {
+            box.checked = true;
+            if (li) li.classList.add('is-done');
+          }
+        });
+
+        function save() {
+          var state = {};
+          boxes.forEach(function (box) {
+            if (box.checked) state[box.dataset.key] = 1;
+          });
+          try {
+            localStorage.setItem(KEY, JSON.stringify(state));
+          } catch (e) {
+            /* private browsing: the page still works, progress just will not persist */
+          }
+        }
+
+        var countEl = document.getElementById('count');
+        var barEl = document.getElementById('bar');
+
+        function render() {
+          var done = boxes.filter(function (b) {
+            return b.checked;
+          }).length;
+          countEl.textContent = done + ' of ' + boxes.length + ' done';
+          barEl.style.width = (boxes.length ? (done / boxes.length) * 100 : 0) + '%';
+        }
+
+        boxes.forEach(function (box) {
+          box.addEventListener('change', function () {
+            var li = box.closest('li');
+            if (li) li.classList.toggle('is-done', box.checked);
+            save();
+            render();
+          });
+        });
+
+        document.getElementById('print').addEventListener('click', function () {
+          window.print();
+        });
+
+        document.getElementById('clear').addEventListener('click', function () {
+          if (!window.confirm('Clear every checkmark on this page?')) return;
+          boxes.forEach(function (box) {
+            box.checked = false;
+            var li = box.closest('li');
+            if (li) li.classList.remove('is-done');
+          });
+          save();
+          render();
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
