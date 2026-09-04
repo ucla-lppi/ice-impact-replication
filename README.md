@@ -3,7 +3,7 @@
 A step-by-step guide for organizations who want to measure foot traffic changes and lost sales
 around immigration enforcement actions in their own area.
 
-Live site: https://ucla-lppi.github.io/ice-impact-replication
+Live site: https://albertkun.github.io/ice-impact-replication
 
 ## Editing the guide
 
